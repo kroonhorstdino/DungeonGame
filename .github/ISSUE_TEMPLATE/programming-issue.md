@@ -1,11 +1,13 @@
 ---
 name: Programming issue
-about: Issue about programming something into the game
+about: Issue about implementing specific feature
 title: "[IMPLEMENT]"
 labels: ''
 assignees: kroonhorstdino
 
 ---
+
+_Dependencies_: #NUM (Ref issues here)
 
 _Specification_:
 
