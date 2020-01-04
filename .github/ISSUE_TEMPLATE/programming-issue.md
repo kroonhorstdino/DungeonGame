@@ -28,4 +28,4 @@ How?
 - [ ] Logic written
 - [ ] Implemented in game
 - [ ] Tested in game
-- [ ] **Ready**
+- [ ] **Ready** ✔️
