@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageDealer, IDamagable
 {
-    [SerializeField] float _health;
+    [SerializeField] StatFloat _health;
+    [SerializeField] StatFloat _otherHealth;
 
     Animator _animator;
     PlayerMovement _playerMovement;
     CombatSystem _comboSystem;
 
-    public float Health { get => _health; private set => _health = value; }
+    public StatFloat Health { get => _health; private set => _health = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour, IDamageDealer, IDamagable
 
     public void DealDamage(IDamageDealer actor, float damage)
     {
-        _health -= damage;
+        _health.Current -= damage;
     }
 
     public void StartDeath()
