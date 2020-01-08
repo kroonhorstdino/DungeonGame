@@ -7,17 +7,19 @@ assignees: kroonhorstdino
 
 ---
 
-_Dependencies_: #NUM (Ref issues here)
+### _Related_: 
+#NUM (Ref issues here)
 
-_Specification_:
+### _Specification_:
 
-Why?
+Why? What?
 
-_Implementation_:
+### _Implementation_:
 
 How?
 
 ***
+### Steps:
 
 - [ ]
 - [ ]
