@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RocketRaptor.Events;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IDamageDealer, IDamagable
+[RequireComponent(typeof(GameEventHandler))]
+public class PlayerController : EntityBase, IDamageDealer, IDamagable, IEventObserver
 {
     [SerializeField] StatFloat _health;
     [SerializeField] StatFloat _otherHealth;
@@ -19,6 +21,13 @@ public class PlayerController : MonoBehaviour, IDamageDealer, IDamagable
         _animator = GetComponent<Animator>();
         _playerMovement = GetComponent<PlayerMovement>();
         _comboSystem = GetComponent<CombatSystem>();
+
+        GetComponent<GameEventHandler>().AddListener(OnDeath, GameEvents.Default);
+    }
+
+    void Test()
+    {
+        GetComponent<GameEventHandler>().Trigger(GameEvents.Default, new GameEventBase(this));
     }
 
     // Update is called once per frame
@@ -46,7 +55,7 @@ public class PlayerController : MonoBehaviour, IDamageDealer, IDamagable
         _health.Current -= damage;
     }
 
-    public void StartDeath()
+    public void OnDeath(IGameEvent eventInfo)
     {
         StartCoroutine(Die());
     }

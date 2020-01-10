@@ -2,7 +2,9 @@
 using System.Collections;
 using UnityEditor;
 
-[CustomEditor(typeof(GenerateDungeon))]
+using RocketRaptor.Dungeon.Generation;
+
+[CustomEditor(typeof(DungeonGenerator))]
 public class GenerateDungeonEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -13,7 +15,7 @@ public class GenerateDungeonEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Generate Dungeon with parameters:");
 
-        GenerateDungeon generateDungeon = (GenerateDungeon)target;
+        DungeonGenerator generateDungeon = (DungeonGenerator)target;
         if (GUILayout.Button("Generate Dungeon"))
         {
             generateDungeon.TestGenerate();
