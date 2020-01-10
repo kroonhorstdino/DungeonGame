@@ -3,7 +3,7 @@ name: Create/Edit game art
 about: Creating or editing art for game without design stage
 title: "[ART]"
 labels: graphics
-assignees: art1st1c
+assignees: MarcAbraham
 
 ---
 
@@ -17,6 +17,7 @@ How should it look?
 What is it used for?
 
 ***
+Key features
 
 - [ ]
 - [ ]
@@ -24,5 +25,6 @@ What is it used for?
 
  ***
 
+- [ ] Drawing complete
 - [ ] Imported as asset
 - [ ] **Ready** ✔️
