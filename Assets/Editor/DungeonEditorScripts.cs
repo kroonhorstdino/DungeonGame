@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEditor;
 
-using RocketRaptor.Dungeon.Generation;
+using Raptor.Dungeon.Generation;
 
 [CustomEditor(typeof(DungeonGenerator))]
 public class GenerateDungeonEditor : Editor
@@ -15,10 +15,30 @@ public class GenerateDungeonEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Generate Dungeon with parameters:");
 
-        DungeonGenerator generateDungeon = (DungeonGenerator)target;
+        DungeonGenerator dungeonGenerator = (DungeonGenerator)target;
         if (GUILayout.Button("Generate Dungeon"))
         {
-            generateDungeon.TestGenerate();
+            if (!EditorApplication.isPlaying)
+            {
+                Debug.LogError("Generation has to be done in playmode to execute properly!");
+
+            }
+            else
+            {
+                dungeonGenerator.TestGenerate();
+            }
+        }
+
+        if (GUILayout.Button("Reset Dungeon"))
+        {
+            dungeonGenerator.ResetDungeon();
+        }
+
+        EditorGUILayout.Separator();
+
+        if (GUILayout.Button("RESET GENERATOR"))
+        {
+            dungeonGenerator.ResetGenerator();
         }
     }
 }

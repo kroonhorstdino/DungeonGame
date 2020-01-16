@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using RocketRaptor.Events;
+using Raptor.Events;
 using UnityEngine;
 
-namespace RocketRaptor.Events
+namespace Raptor.Events
 {
 
     public enum GameEvents

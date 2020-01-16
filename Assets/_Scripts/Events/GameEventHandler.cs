@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RocketRaptor.Events
+namespace Raptor.Events
 {
 
     public class GameEventHandler : MonoBehaviour

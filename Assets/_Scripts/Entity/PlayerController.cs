@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using RocketRaptor.Events;
+using Raptor.Events;
 using UnityEngine;
 
 [RequireComponent(typeof(GameEventHandler))]

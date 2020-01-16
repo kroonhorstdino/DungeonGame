@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RocketRaptor.Dungeon.Environment
+namespace Raptor.Dungeon.Environment
 {
     /// <summary>
     /// Controller for a connectro between floors
