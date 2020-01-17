@@ -18,6 +18,9 @@ namespace Raptor.Dungeon
         Vector3 _lastFixedFramePosition;
         [SerializeField] Vector3 _velocity;
 
+        [Header("Neighbourhood")]
+        [SerializeField] List<DungeonRoom> _neighbours;
+
         public int ID { set => id = value; get => id; }
         public Collider2D Collider { get => _collider; }
         public Rigidbody2D Rb { get => _rb; }
@@ -45,6 +48,11 @@ namespace Raptor.Dungeon
             _lastFixedFramePosition = transform.position;
         }
 
+        public void SetNeighbourhood(List<DungeonRoom> neighbours)
+        {
+            _neighbours = neighbours;
+        }
+
         public static int GetNextID()
         {
             //I know I can just do ++currentID, but readable code is better!
@@ -63,5 +71,4 @@ namespace Raptor.Dungeon
             Gizmos.DrawWireCube(_collider.bounds.center, _collider.bounds.size);
         }
     }
-
 }

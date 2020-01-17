@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 using Raptor.Dungeon;
 using Raptor.Utility;
+using Raptor.Utility.Grid;
 
 namespace Raptor.Dungeon.Generation
 {
@@ -55,25 +56,45 @@ namespace Raptor.Dungeon.Generation
 
             //Rooms have rigidbodies and are being simulated
             Debug.Log("Simulating rooms...");
+            yield return new WaitForFixedUpdate();
+            yield return WaitForBodySimulationEnd();
 
-            //Wait until rooms stop moving
-            yield return new WaitForSeconds(2f);
-            yield return new WaitWhile(() => IsGenerationBodySimulationActive());
+            //Convert to trigger, end simulation of bodies
+            _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => r.Collider.isTrigger = true);
+            //Then snap all rooms to the grid (overlap should be impossible)
+            _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => GridUtility.SnapToGrid(r));
 
-            //Snap every room to the grid and wait until simulation is complete
-            _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => _dungeon.SnapToGrid(r));
-            yield return new WaitWhile(() => IsGenerationBodySimulationActive());
+            //NOTE: Possibly check if rooms overlap?
 
-            AdjustColliderSizeAgent adjuster = new AdjustColliderSizeAgent(_dungeon.Layout);
-            adjuster.AdjustColliderSizes();
 
-            Debug.Log("Generation of dungeon rooms is finished");
+            //Search and set neighbours of the rooms
+            NeighbourSearchAgent adjuster = new NeighbourSearchAgent(_dungeon.Layout);
+            adjuster.SetNeighboursAllRooms();
+
+            Debug.Log("Physical simulation of dungeon room rigidbodies complete...");
+
+            /**
+             * GENERATE GRAPH OF DUNGEON ROOMS
+             * */
+
+            // TODO: Generate neighbourhood graph
+
+            // TODO: 
         }
 
         public IEnumerator GenerateFloor(int floor)
         {
             //TODO: Production logic
             yield return null;
+        }
+
+        /// <summary>
+        /// Shorthand, used when waiting for end of body simulation
+        /// </summary>
+        /// <returns></returns>
+        WaitWhile WaitForBodySimulationEnd()
+        {
+            return new WaitWhile(() => IsGenerationBodySimulationActive());
         }
 
         /// <summary>

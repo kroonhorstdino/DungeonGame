@@ -7,7 +7,7 @@ namespace Raptor.Dungeon.Generation
     /// <summary>
     /// Generator Agent that places rooms based on dungeon and room rules
     /// </summary>
-    public class InitialRoomPlacerAgent : ISimulationAgent
+    public class InitialRoomPlacerAgent : IIntializerAgent
     {
         DungeonFloorRules _floorRules;
 

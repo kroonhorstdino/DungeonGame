@@ -8,7 +8,7 @@ namespace Raptor.Dungeon.Generation
         List<DungeonRoom> _rooms;
 
 
-        public void Init(DungeonLayout layout, DungeonRules rules)
+        public void Init(DungeonLayout layout, DungeonFloorRules rules)
         {
             _rooms = layout._rooms;
         }
@@ -22,15 +22,4 @@ namespace Raptor.Dungeon.Generation
             //room.Collider.bounds.
         }
     }
-}
-
-namespace Raptor.Utility
-{
-    /*
-    public static class BoundsUtil
-    {
-        public static BoundsInt ConvertToInt()
-        {
-        }
-    }*/
 }

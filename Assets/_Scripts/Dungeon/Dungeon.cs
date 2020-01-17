@@ -41,11 +41,6 @@ namespace Raptor.Dungeon
             _layout = new DungeonLayout();
         }
 
-        public void SnapToGrid(DungeonRoom room)
-        {
-            room.transform.position = _worldGrid.WorldToCell(room.transform.position);
-        }
-
         void OnDestroy()
         {
             _layout.OnDestroy();
