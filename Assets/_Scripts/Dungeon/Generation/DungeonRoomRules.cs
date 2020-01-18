@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
 using Raptor.Utility;
@@ -8,7 +8,7 @@ namespace Raptor.Dungeon.Generation
     /// <summary>
     /// Template rules used for generating room
     /// </summary>
-    [CreateAssetMenu(fileName = "RoomTileset", menuName = "Dungeon/RoomTileset", order = 0)]
+    [CreateAssetMenu(fileName = "DungeonRoomRules", menuName = "Dungeon/RoomRules", order = 0)]
     public class DungeonRoomRules : ScriptableObject
     {
         public RuleTile _groundTile;
