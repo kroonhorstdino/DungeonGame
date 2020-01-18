@@ -61,7 +61,7 @@ namespace Raptor.Dungeon.Generation
             List<Collider2D> neighboursCollider = new List<Collider2D>();
 
             Vector3 originalPosition = r.Collider.bounds.center;
-            Vector3 originalSize = r.Collider.bounds.size;
+            Vector3 originalSize = r.Collider.bounds.size + new Vector3(-0.3f, -0.3f, 0f);
 
             // Iterate through main cardinal directions (add 2 to direction)
             foreach (GridDirection gridDir in directions)
@@ -69,7 +69,7 @@ namespace Raptor.Dungeon.Generation
                 Vector3 dirVector = (Vector3)GridUtility.GetNormalizedDirectionVector(gridDir);
 
                 //Use modified bounds to get colliders in that direction
-                Vector3 newPos = originalPosition + dirVector;
+                Vector3 newPos = originalPosition + dirVector * 0.5f;
 
                 ///=== Check for overlapping colliders
                 List<Collider2D> neighboursInDir = Physics2D.OverlapBoxAll(newPos, originalSize, 0f).ToList();
@@ -78,9 +78,9 @@ namespace Raptor.Dungeon.Generation
             }
 
             //Convert all colliders into dungeon rooms and assign set as list
-            neighbours.Distinct();
             neighbours = neighboursCollider.ToList().ConvertAll(c => Col2DToDungeonRoom(c));
             neighbours.Remove(r);
+
 
             /// <summary>
             /// Convert Collider2D into DungeonRoom
@@ -91,7 +91,6 @@ namespace Raptor.Dungeon.Generation
             {
                 return c.GetComponent<DungeonRoom>();
             }
-
         }
     }
 }

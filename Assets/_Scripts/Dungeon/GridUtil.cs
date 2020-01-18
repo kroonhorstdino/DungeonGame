@@ -30,12 +30,15 @@ namespace Raptor.Utility.Grid
             * 0 degrees is North direction
             */
 
-            //Angle for direction
-            Quaternion angle = Quaternion.AngleAxis(45 * (int)direction, Vector2.up);
-            Vector2 angledVector = angle * Vector2.up;
+            //Correct angle is counter-clockwise, while directions are ordered clockwise
+            float correctAngle = 45 * (int)direction * -1;
 
-            //Clamp to length 1 to get normalized vector
-            return Vector2.ClampMagnitude(angledVector, 1);
+            //Angle for direction
+            Quaternion angle = Quaternion.AngleAxis(correctAngle, Vector3.forward);
+            Vector2 angledVector = Vector2Int.RoundToInt(angle * Vector2.up);
+
+            //Return angeld normalized vector
+            return angledVector.normalized;
         }
 
         public static GridDirection GetOppositeDirection(GridDirection direction)

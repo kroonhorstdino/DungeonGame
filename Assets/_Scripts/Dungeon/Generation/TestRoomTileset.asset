@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: RoomTileset
+  m_Name: TestRoomTileset
   m_EditorClassIdentifier: Assembly-CSharp:Raptor.Dungeon.Generation:DungeonRoomRules
-  _groundTile: {fileID: 11400000, guid: f04d82458933fe44ca238ae8582bca23, type: 2}
-  _wallTile: {fileID: 11400000, guid: 52354f2ce30911742a0a7eaf2eddd5cf, type: 2}
+  _groundTile: {fileID: 0}
+  _wallTile: {fileID: 0}
   _xSize:
     _weightedDistribution:
       serializedVersion: 2
@@ -39,6 +39,6 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    min: 10
+    min: 100
     max: 1600
   _shape: 0
