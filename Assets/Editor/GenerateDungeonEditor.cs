@@ -6,7 +6,7 @@ using UnityEditor;
 
 using Raptor.Dungeon.Generation;
 using Raptor.Dungeon;
-using Raptor.Utility.Grid;
+using Raptor.Utility;
 
 namespace RocketRaptor.EditorExtension
 {
@@ -45,6 +45,11 @@ namespace RocketRaptor.EditorExtension
             {
                 dungeonGenerator.ResetGenerator();
             }
+
+            if (GUILayout.Button("Construct rooms"))
+            {
+                Debug.Log("Construct rooms");
+            }
         }
     }
 
@@ -63,12 +68,12 @@ namespace RocketRaptor.EditorExtension
 
             if (GUILayout.Button("Check for neighbours"))
             {
-                      List<DungeonRoom> neighbours = new List<DungeonRoom>();
-            List<Collider2D> neighboursCollider = new List<Collider2D>();
+                List<DungeonRoom> neighbours = new List<DungeonRoom>();
+                List<Collider2D> neighboursCollider = new List<Collider2D>();
 
-            Vector3 originalPosition = room.Collider.bounds.center;
-            Vector3 originalSize = room.Collider.bounds.size + new Vector3(-0.3f, -0.3f);
-            
+                Vector3 originalPosition = room.Collider.bounds.center;
+                Vector3 originalSize = room.Collider.bounds.size + new Vector3(-0.3f, -0.3f);
+
                 Vector3 dirVector = (Vector3)GridUtility.GetNormalizedDirectionVector(0);
 
                 //Use modified bounds to get colliders in that direction

@@ -12,59 +12,63 @@ namespace Raptor.Dungeon.Generation
     /// Rules applying for every floor of the dungeon
     /// </summary>
     [CreateAssetMenu(fileName = "DungeonRules", menuName = "Dungeon/DungeonRules", order = 0)]
-    public class DungeonRules : ScriptableObject
+    public class DungeonRules : ScriptableObject, IDefaultGameObjectOverride
     {
         /// <summary>
         /// Number of floors in dungeon
         /// </summary>
         public Range _numFloors;
 
-        [SerializeField] DungeonFloorRules _defaultRules;
+        [SerializeField] private GameObject _defaultRoomObject;
+        [Tooltip("Overrides default room object if not null")]
+        [SerializeField] private GameObject _overrideRoomObject;
+
+        [SerializeField] FloorRules _defaultRules;
         [SerializeField] DungeonFloorRulesDict _overrideFloorRules;
+
+        public GameObject DefaultGameObject
+        {
+            get { return _defaultRoomObject; }
+            set
+            {
+                _defaultRoomObject = value;
+            }
+        }
+
+        public GameObject CorrectGameObject
+        {
+            get
+            {
+                return _overrideRoomObject ?? _defaultRoomObject;
+            }
+        }
 
         /// <summary>
         /// TODO: If override rules exist, return that instead of default rules
+        /// NOTE: Returns a new instance every time it is called!
         /// </summary>
         /// <param name="floor"></param>
         /// <returns></returns>
-        public DungeonFloorRules GetDungeonFloorRules(int floor)
+        public FloorRules GenerateFloorRules(int floor)
         {
-            return _defaultRules;
+            FloorRules floorRules = Instantiate(_defaultRules);
+            return floorRules;
         }
 
     }
 
     [System.Serializable]
-    public class DungeonFloorRulesDict : SerializableDictionaryBase<int, DungeonFloorRules> { };
+    public class DungeonFloorRulesDict : SerializableDictionaryBase<int, FloorRules> { };
 
     /// <summary>
-    /// Rules for a dungeon floor
+    /// This class has a default GameObject, however it can be overriden by a custom value.
+    /// Supposed to be used for DungeonRules, FloorRules, RoomRules
     /// </summary>
-    [CreateAssetMenu(fileName = "DungeonFloorRules", menuName = "Dungeon/DungeonFloorRules", order = 0)]
-    public class DungeonFloorRules : ScriptableObject
+    public interface IDefaultGameObjectOverride
     {
-
-        /// <summary>
-        /// Number of desired rooms per floor
-        /// </summary>
-        public Range _numRoomsPerFloor;
-
-        /// <summary>
-        /// Rules for rooms for all floors with weights for picking
-        /// </summary>
-        public WeightedRoomRulesDict _weightedRoomRules;
-
-        /// <summary>
-        ///  Bounds of each dungeon floor
-        /// </summary>
-        public BoundsInt _bounds;
+        GameObject DefaultGameObject { get; set; }
+        GameObject CorrectGameObject { get; }
     }
 
-    [System.Serializable]
-    public class WeightedRoomRulesDict : SerializableDictionaryBase<float, DungeonRoomRules>
-    {
 
-    };
-
-    ///TODO: Override rules (Issue #21)
 }

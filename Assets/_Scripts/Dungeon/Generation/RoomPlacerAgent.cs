@@ -7,15 +7,18 @@ namespace Raptor.Dungeon.Generation
     /// <summary>
     /// Generator Agent that places rooms based on dungeon and room rules
     /// </summary>
-    public class InitialRoomPlacerAgent : IIntializerAgent
+    public class InitialRoomPlacerAgent : ILayoutGeneratorAgent
     {
-        DungeonFloorRules _floorRules;
+        Randomizer _random;
 
         int _numInitialRooms = 50;
-        BoundsInt _initialPlacementBounds = new BoundsInt(Vector3Int.zero, new Vector3Int(20, 20, 0));
+        FloorRules _floorRules;
 
-        public InitialRoomPlacerAgent(DungeonFloorRules floorRules)
+        BoundsInt _initialPlacementBounds = new BoundsInt(Vector3Int.zero, new Vector3Int(75, 75, 0));
+
+        public InitialRoomPlacerAgent(ref Randomizer randomizer, FloorRules floorRules)
         {
+            _random = randomizer;
             _floorRules = floorRules;
         }
 
@@ -25,7 +28,7 @@ namespace Raptor.Dungeon.Generation
 
             for (int i = 0; i < _numInitialRooms; i++)
             {
-                RoomGenerator roomGen = new RoomGenerator(ChooseRoomRules());
+                RoomGenerator roomGen = new RoomGenerator(ChooseRoomRules(), ref _random);
                 DungeonRoom room = roomGen.GenerateRoom();
 
                 /**
@@ -35,7 +38,7 @@ namespace Raptor.Dungeon.Generation
                 if (room.ID != 0)
                 {
                     //Pick random point
-                    room.transform.position = Randomizer.PickPointInt(_initialPlacementBounds);
+                    room.transform.position = _random.PickPointInBounds(_initialPlacementBounds);
                 }
                 //Only first case
                 else
@@ -54,9 +57,9 @@ namespace Raptor.Dungeon.Generation
         /// <summary>
         /// Picks room rules based on weights
         /// </summary>
-        protected virtual DungeonRoomRules ChooseRoomRules()
+        protected virtual RoomRules ChooseRoomRules()
         {
-            return Randomizer.PickWeightedOption(_floorRules._weightedRoomRules);
+            return _random.PickOptionWeighted(_floorRules._weightedRoomRules);
         }
     }
 }

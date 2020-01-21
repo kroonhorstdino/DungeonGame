@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: TestRoomTileset
+  m_Script: {fileID: 11500000, guid: aaf6091930b7fe2449c57e16da6917f2, type: 3}
+  m_Name: DungeonRules
   m_EditorClassIdentifier: Assembly-CSharp:Raptor.Dungeon.Generation:DungeonRoomRules
-  _groundTile: {fileID: 0}
-  _wallTile: {fileID: 0}
+  _groundTile: {fileID: 11400000, guid: f04d82458933fe44ca238ae8582bca23, type: 2}
+  _wallTile: {fileID: 11400000, guid: 52354f2ce30911742a0a7eaf2eddd5cf, type: 2}
+  _defaultRoomObject: {fileID: 2260560454744391343, guid: 19d29f99557d8b3438bfe8a39082bb70,
+    type: 3}
+  _overrideRoomObject: {fileID: 0}
   _xSize:
     _weightedDistribution:
       serializedVersion: 2
@@ -21,7 +24,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    min: 10
+    min: 15
     max: 40
   _ySize:
     _weightedDistribution:
@@ -30,7 +33,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    min: 10
+    min: 15
     max: 40
   _roomSurfaceArea:
     _weightedDistribution:
@@ -39,6 +42,6 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    min: 100
-    max: 1600
+    min: 125
+    max: 4000
   _shape: 0

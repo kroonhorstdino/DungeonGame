@@ -1,17 +1,23 @@
 using UnityEngine;
 
+using Raptor.Utility;
+using Raptor.Utility.Math;
+
 namespace Raptor.Dungeon.Generation
 {
     /// <summary>
-    /// Creates one room with different shapes, sizes, etc.
+    /// Creates one room based on rules and randomizer
     /// </summary>
     public class RoomGenerator
     {
-        protected DungeonRoomRules _roomRules;
+        protected Randomizer _random;
+
+        protected RoomRules _roomRules;
         protected GameObject _roomObject;
 
-        public RoomGenerator(DungeonRoomRules roomRules)
+        public RoomGenerator(RoomRules roomRules, ref Randomizer random)
         {
+            _random = random;
             _roomRules = roomRules;
         }
 
@@ -24,42 +30,46 @@ namespace Raptor.Dungeon.Generation
             //Initialize GameObject
             CreateRoomObject();
             //Generate the shape as collider
-            GenerateRoomShape();
+            InitRoomShape();
             //Finally add script
 
-            DungeonRoom room = _roomObject.AddComponent<DungeonRoom>();
-            room.ID = DungeonRoom.GetNextID();
-            room.gameObject.name = "Room " + room.ID.ToString();
+            DungeonRoom room = InitBehavior();
 
             return room;
         }
 
         /// <summary>
-        /// Generates dungeon room gameobject with all its components
+        /// Creates room object from prefab specified in rules
         /// </summary>
         protected virtual void CreateRoomObject()
         {
             //Create new Room Object
-            _roomObject = new GameObject();
-
-            _roomObject.transform.position = Vector3Int.zero;
-            _roomObject.transform.rotation = Quaternion.identity;
-
-            Rigidbody2D rg = _roomObject.AddComponent<Rigidbody2D>();
-            rg.gravityScale = 0f;
-            rg.freezeRotation = true;
-
-            //Simulate!
-            rg.simulated = true;
+            _roomObject = MonoBehaviour.Instantiate(_roomRules.CorrectGameObject);
         }
 
         /// <summary>
         /// Create collider and shape it based on rules
         /// </summary>
         /// <param name="collider"></param>
-        protected virtual void GenerateRoomShape()
+        protected virtual void InitRoomShape()
         {
-            new SimpleRoomShaper().AddShapedCollider(_roomRules, _roomObject);
+            //NOTE: This looks fishy
+            new SimpleRoomShaper().ShapeCollider(_roomRules, _roomObject, ref _random);
+        }
+
+        /// <summary>
+        /// Adds behavior to gameobject with proper intialization and then returns it 
+        /// </summary>
+        /// <returns></returns>
+        protected DungeonRoom InitBehavior()
+        {
+            DungeonRoom room = _roomObject.GetComponent<DungeonRoom>();
+            room.ID = DungeonRoom.GetNextID();
+            room.SetName();
+
+            room._rules = _roomRules;
+
+            return room;
         }
     }
 
@@ -73,7 +83,7 @@ namespace Raptor.Dungeon.Generation
         /// </summary>
         /// <param name="rules"></param>
         /// <param name="roomObject"></param>
-        void AddShapedCollider(DungeonRoomRules rules, GameObject roomObject);
+        void ShapeCollider(RoomRules rules, GameObject roomObject, ref Randomizer random);
     }
 
     /// <summary>
@@ -81,15 +91,14 @@ namespace Raptor.Dungeon.Generation
     /// </summary>
     public class SimpleRoomShaper : RoomShaper
     {
-        public void AddShapedCollider(DungeonRoomRules rules, GameObject _roomObject)
+        public void ShapeCollider(RoomRules rules, GameObject _roomObject, ref Randomizer random)
         {
-            _roomObject.AddComponent<BoxCollider2D>();
-
-            Bounds b = _roomObject.GetComponent<BoxCollider2D>().bounds;
+            BoxCollider2D col = _roomObject.GetComponent<BoxCollider2D>();
+            Bounds b = col.bounds;
 
             //Size of bounds
-            float xSize = rules._xSize.PickRoundedInt();
-            float ySize = rules._ySize.PickRoundedInt();
+            float xSize = MathUtil.CeilToIntEven(random.PickIntFromRange(rules._xSize));
+            float ySize = MathUtil.CeilToIntEven(random.PickIntFromRange(rules._ySize));
 
             float xCenter = b.center.x;
             float yCenter = b.center.y;
@@ -100,7 +109,6 @@ namespace Raptor.Dungeon.Generation
             //Set extents
             b.SetMinMax(boundsMin, boundsMax);
 
-            BoxCollider2D col = _roomObject.GetComponent<BoxCollider2D>();
             col.offset = b.center;
             col.size = b.size;
             //col.sharedMaterial.friction = 1f;

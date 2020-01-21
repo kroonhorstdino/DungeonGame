@@ -2,6 +2,7 @@
 using UnityEngine.Tilemaps;
 
 using Raptor.Utility;
+using Raptor;
 
 namespace Raptor.Dungeon.Generation
 {
@@ -9,10 +10,37 @@ namespace Raptor.Dungeon.Generation
     /// Template rules used for generating room
     /// </summary>
     [CreateAssetMenu(fileName = "DungeonRoomRules", menuName = "Dungeon/RoomRules", order = 0)]
-    public class DungeonRoomRules : ScriptableObject
+    public class RoomRules : ScriptableObject, IDefaultGameObjectOverride
     {
         public RuleTile _groundTile;
         public RuleTile _wallTile;
+
+        [SerializeField] GameObject _defaultRoomObject;
+        [Tooltip("Overrides default room object if not null")]
+        [SerializeField] GameObject _overrideRoomObject;
+
+        public GameObject DefaultGameObject
+        {
+            get { return _defaultRoomObject; }
+            set
+            {
+                _defaultRoomObject = value;
+            }
+        }
+
+        public GameObject CorrectGameObject
+        {
+            get
+            {
+                if (_overrideRoomObject == null)
+                {
+                    return _defaultRoomObject;
+                }
+
+                return _overrideRoomObject;
+            }
+        }
+
 
         /// <summary>
         /// Size on x-axis including walls 

@@ -1,30 +1,33 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+using Raptor.Dungeon.Generation;
+
 namespace Raptor.Dungeon
 {
     [ExecuteInEditMode]
     public class DungeonRoom : MonoBehaviour
     {
-        [SerializeField] int id;
+        [SerializeField] int _id;
         static int currentID = -1;
 
+        //For simulation
         [SerializeField] Collider2D _collider;
         [SerializeField] Rigidbody2D _rb;
-
-        /// <summary>
-        /// NOTE: Normal rigidbody velocity doesn't work for some reason
-        /// </summary>
         Vector3 _lastFixedFramePosition;
         [SerializeField] Vector3 _velocity;
 
         [Header("Neighbourhood")]
         [SerializeField] List<DungeonRoom> _neighbours;
 
-        public int ID { set => id = value; get => id; }
+        [Header("Rules")]
+        [SerializeField] public RoomRules _rules;
+
+        public int ID { set => _id = value; get => _id; }
         public Collider2D Collider { get => _collider; }
         public Rigidbody2D Rb { get => _rb; }
         public float Speed { get => Vector3.Magnitude(_velocity); }
+        public List<DungeonRoom> Neighbours { get => _neighbours; }
 
         public void Awake()
         {
@@ -51,6 +54,11 @@ namespace Raptor.Dungeon
         public void SetNeighbourhood(List<DungeonRoom> neighbours)
         {
             _neighbours = neighbours;
+        }
+
+        public void SetName()
+        {
+            gameObject.name = "Room " + _id.ToString();
         }
 
         public static int GetNextID()

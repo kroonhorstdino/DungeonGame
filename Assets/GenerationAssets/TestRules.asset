@@ -19,8 +19,11 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    min: 0
-    max: 0
+    min: 1
+    max: 100
+  _defaultRoomObject: {fileID: 2260560454744391343, guid: 19d29f99557d8b3438bfe8a39082bb70,
+    type: 3}
+  _overrideRoomObject: {fileID: 0}
   _defaultRules: {fileID: 11400000, guid: ba17bfd8a20be2143a20307f5432f6e9, type: 2}
   _overrideFloorRules:
     reorderableList:

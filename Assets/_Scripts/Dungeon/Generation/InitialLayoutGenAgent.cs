@@ -10,17 +10,21 @@ namespace Raptor.Dungeon.Generation
     /// </summary>
     public class GraphGenAgent : ILayoutGeneratorAgent
     {
-        DungeonFloorRules _floorRules;
+        FloorRules _floorRules;
         DungeonGraph _graph;
+        DungeonLayout _layout;
 
-        public void Init(DungeonLayout layout, DungeonFloorRules floorRules)
+        public GraphGenAgent(DungeonLayout layout, FloorRules floorRules)
         {
             _floorRules = floorRules;
             _graph = new DungeonGraph(layout._rooms);
+            _layout = layout;
         }
 
         public void Execute()
         {
+            _graph.GenerateConnectedRoomGraph();
+            _layout.Graph = _graph;
         }
     }
 }

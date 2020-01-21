@@ -32,6 +32,11 @@ namespace Raptor.Dungeon
         public Vector3Int CenterPoint { get => _centerPoint; }
         public int CurrentFloor { get => _currentFloor; }
         public DungeonLayout Layout { get => _layout; }
+        public Grid WorldGrid { get => _worldGrid; set => _worldGrid = value; }
+        public Tilemap GroundTilemap { get => _groundTilemap; }
+        public Tilemap ObstacleTilemap { get => _obstacleTilemap; }
+
+
 
         //Center point for crawlers
         [SerializeField] Vector3Int _centerPoint;

@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Room
   - Terrain
   - Entity
   - 
@@ -40,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 970328761
     locked: 0
   - name: Entity
     uniqueID: 2815459619

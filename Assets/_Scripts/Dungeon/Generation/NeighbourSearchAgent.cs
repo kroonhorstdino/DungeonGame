@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Raptor.Utility.Grid;
+using Raptor.Utility;
 
 namespace Raptor.Dungeon.Generation
 {
     /// <summary>
     /// Adjust colliders of rooms
     /// </summary>
-    public class NeighbourSearchAgent : IIntializerAgent
+    public class NeighbourSearchAgent : ILayoutGeneratorAgent
     {
         DungeonLayout _layout;
 
@@ -74,23 +74,12 @@ namespace Raptor.Dungeon.Generation
                 ///=== Check for overlapping colliders
                 List<Collider2D> neighboursInDir = Physics2D.OverlapBoxAll(newPos, originalSize, 0f).ToList();
 
-                neighboursCollider.AddRange(neighboursInDir);
+                //Convert all colliders into dungeon rooms and assign set as list
+                neighbours.AddRange(neighboursInDir.ConvertAll(c => c.GetComponent<DungeonRoom>()));
             }
 
-            //Convert all colliders into dungeon rooms and assign set as list
-            neighbours = neighboursCollider.ToList().ConvertAll(c => Col2DToDungeonRoom(c));
-            neighbours.Remove(r);
-
-
-            /// <summary>
-            /// Convert Collider2D into DungeonRoom
-            /// </summary>
-            /// <param name="c"></param>
-            /// <returns></returns>
-            DungeonRoom Col2DToDungeonRoom(Collider2D c)
-            {
-                return c.GetComponent<DungeonRoom>();
-            }
+            //Remove own colliders
+            neighbours.RemoveAll(room => r.ID == room.ID);
         }
     }
 }

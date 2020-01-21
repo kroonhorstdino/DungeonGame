@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
+using Raptor.Utility.Graph;
+
 namespace Raptor.Dungeon
 {
 
@@ -14,6 +16,9 @@ namespace Raptor.Dungeon
     public class DungeonLayout
     {
         [SerializeField] public List<DungeonRoom> _rooms;
+        [SerializeField] private DungeonGraph graph;
+
+        public DungeonGraph Graph { get => graph; set => graph = value; }
 
         public DungeonLayout()
         {
@@ -60,9 +65,9 @@ namespace Raptor.Utility.Graph
     public abstract class Graph<V> where V : new()
     {
         //Edges
-        List<Edge<V>> _edges;
+        [SerializeField] protected List<Edge<V>> _edges;
         //Vertices (Nodes)
-        List<V> _vertices;
+        protected List<V> _vertices;
 
         public Graph()
         {
@@ -115,6 +120,7 @@ namespace Raptor.Utility.Graph
         #endregion
     }
 
+    [Serializable]
     public class DungeonGraph : Graph<DungeonRoom>
     {
         public DungeonGraph() : base()
@@ -126,11 +132,21 @@ namespace Raptor.Utility.Graph
         }
 
         /// <summary>
-        /// Generates new full graph or completes incomple graph if one is present already
+        /// Generates full graph, which connects all rooms, regardless of proximity or completes incomple graph if one is present already
         /// </summary>
         public void GenerateFullGraph()
         {
 
+        }
+
+        //TODO: Display graph
+        public void GenerateConnectedRoomGraph()
+        {
+            foreach (DungeonRoom room in _vertices)
+            {
+                //Add all room / neighbour pairs as edges into graph
+                room.Neighbours.ForEach(other => AddEdge(new Edge<DungeonRoom>(room, other)));
+            }
         }
     }
 
@@ -181,6 +197,7 @@ namespace Raptor.Utility.Graph
     /// <summary>
     /// Edge in graph with DungeonNodes
     /// </summary>
+    [Serializable]
     public class DungeonEdge : Edge<DungeonRoom>
     {
         public DungeonEdge((DungeonRoom, DungeonRoom) edge, bool isDirected = false) : base(edge, isDirected)

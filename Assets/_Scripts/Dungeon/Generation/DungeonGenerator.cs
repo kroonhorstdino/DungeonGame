@@ -6,7 +6,6 @@ using UnityEngine.Tilemaps;
 
 using Raptor.Dungeon;
 using Raptor.Utility;
-using Raptor.Utility.Grid;
 
 namespace Raptor.Dungeon.Generation
 {
@@ -17,19 +16,15 @@ namespace Raptor.Dungeon.Generation
     public class DungeonGenerator : MonoBehaviour
     {
         [SerializeField] Dungeon _dungeon;
-        [Header("Testing")]
+        [Header("Simulation")]
         [SerializeField] DungeonRules _testRules;
 
         [SerializeField] int seed;
+        public Randomizer _random;
 
         private void Awake()
         {
-            Randomizer.Init(seed);
-
-            //TODO: Work on layout generation
-            //Parent gameobject for all room gameobjects
-            //_dungeon.DungeonRoomHolder = Instantiate(new GameObject("DungeonRoomHolder"), Vector3Int.zero, Quaternion.identity);
-            //_director = new JollyJennyDirector(_testRules);
+            _random = new Randomizer(seed);
         }
 
         private void Update()
@@ -39,53 +34,52 @@ namespace Raptor.Dungeon.Generation
 
         public void TestGenerate()
         {
+            int floor = 0;
+            DungeonRules dungeonRules = _testRules;
+
             Debug.Log("Generate test dungeon floor");
-            StartGenerateFloor(0);
+            StartGenerateFloor(dungeonRules.GenerateFloorRules(floor));
         }
 
-        public void StartGenerateFloor(int floor)
+        public void StartGenerateFloor(FloorRules floorRules)
         {
-            StartCoroutine(GenerateFloorTest(floor));
+            StartCoroutine(GenerateFloor(floorRules));
         }
 
-        public IEnumerator GenerateFloorTest(int floor)
+        public IEnumerator GenerateFloor(FloorRules floorRules)
         {
             //Create room placer for this floor and generate rooms with correctly shaped colliders
-            InitialRoomPlacerAgent testRoomPlacer = new InitialRoomPlacerAgent(_testRules.GetDungeonFloorRules(floor));
-            _dungeon.Layout.AddRooms(testRoomPlacer.GenerateRooms());
+            InitialRoomPlacerAgent roomPlacer = new InitialRoomPlacerAgent(ref _random, floorRules);
+            _dungeon.Layout.AddRooms(roomPlacer.GenerateRooms());
 
             //Rooms have rigidbodies and are being simulated
             Debug.Log("Simulating rooms...");
+
+            //Wait for simulation to end
             yield return new WaitForFixedUpdate();
             yield return WaitForBodySimulationEnd();
 
             //Convert to trigger, end simulation of bodies
             _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => r.Collider.isTrigger = true);
-            //Then snap all rooms to the grid (overlap should be impossible)
-            _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => GridUtility.SnapToGrid(r));
+            //Then snap all rooms to the grid (overlap should not happen)
+            _dungeon.Layout.ApplyToEachRoom((DungeonRoom r) => GridUtility.SnapToCell(_dungeon.WorldGrid, r));
+
+            yield return new WaitForFixedUpdate();
+            yield return WaitForBodySimulationEnd();
 
             //NOTE: Possibly check if rooms overlap?
-
+            Debug.Log("Physical simulation of dungeon rooms complete...");
 
             //Search and set neighbours of the rooms
-            NeighbourSearchAgent adjuster = new NeighbourSearchAgent(_dungeon.Layout);
-            adjuster.SetNeighboursAllRooms();
+            NeighbourSearchAgent neighbourSearcher = new NeighbourSearchAgent(_dungeon.Layout);
+            neighbourSearcher.SetNeighboursAllRooms();
 
-            Debug.Log("Physical simulation of dungeon room rigidbodies complete...");
+            TilePlacer tilePlacer = new TilePlacer(_dungeon.GroundTilemap, _dungeon.ObstacleTilemap);
+            _dungeon.Layout.ApplyToEachRoom(r => tilePlacer.TileStructure(r));
 
-            /**
-             * GENERATE GRAPH OF DUNGEON ROOMS
-             * */
-
-            // TODO: Generate neighbourhood graph
-
-            // TODO: 
-        }
-
-        public IEnumerator GenerateFloor(int floor)
-        {
-            //TODO: Production logic
-            yield return null;
+            //Generate graph of connected rooms
+            GraphGenAgent graphGen = new GraphGenAgent(_dungeon.Layout, floorRules);
+            graphGen.Execute();
         }
 
         /// <summary>
@@ -115,6 +109,8 @@ namespace Raptor.Dungeon.Generation
             Debug.Log("Resetting dungeon");
 
             _dungeon.Layout.DestroyRooms();
+            _random.Reset(seed);
+            DungeonRoom.ResetNextID();
         }
 
         /// <summary>
@@ -122,8 +118,13 @@ namespace Raptor.Dungeon.Generation
         /// </summary>
         public void ResetGenerator()
         {
-            Randomizer.Reset(seed);
+            _random.Reset(seed);
             DungeonRoom.ResetNextID();
+        }
+
+        public float GetRandFloatTest()
+        {
+            return _random.Pick(0f, 10f);
         }
     }
 }
