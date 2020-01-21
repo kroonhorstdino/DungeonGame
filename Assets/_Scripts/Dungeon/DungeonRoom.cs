@@ -77,6 +77,11 @@ namespace Raptor.Dungeon
         {
             Gizmos.DrawCube(transform.position, new Vector3(1, 1, 0));
             Gizmos.DrawWireCube(_collider.bounds.center, _collider.bounds.size);
+
+            foreach (DungeonRoom room in _neighbours)
+            {
+                Gizmos.DrawLine(transform.position, room.transform.position);
+            }
         }
     }
 }
