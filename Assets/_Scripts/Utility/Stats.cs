@@ -15,6 +15,11 @@ public class Stat<T> where T : struct, IComparable<float>
 
     protected float _timeLastChanged;
 
+    /// <summary>
+    /// Get current value
+    /// When setting, caps correctly.
+    /// </summary>
+    /// <value></value>
     public T Current
     {
         get => _current;
@@ -29,6 +34,14 @@ public class Stat<T> where T : struct, IComparable<float>
 
     public Stat()
     {
+    }
+
+    public Stat(T current, T min, T max, float timeLastChanged)
+    {
+        _current = current;
+        _min = min;
+        _max = max;
+        _timeLastChanged = timeLastChanged;
     }
 
     /// <summary>

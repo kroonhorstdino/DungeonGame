@@ -10,6 +10,8 @@ using Raptor.Utility;
 namespace Raptor.Dungeon.Generation
 {
 
+    //TODO: Set size of initialbounds in Editor
+    // TODO: Set amount of inital rooms in Editor
     /// <summary>
     /// Handles generation of the entire dungeon
     /// </summary>

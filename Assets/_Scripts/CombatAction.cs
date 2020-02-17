@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Raptor.Combat;
+
 [CreateAssetMenu(fileName = "CombatAction", menuName = "Combat/CombatAction", order = 0)]
 public class CombatAction : ScriptableObject
 {

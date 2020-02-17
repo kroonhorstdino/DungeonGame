@@ -44,7 +44,7 @@ namespace Raptor.Dungeon.Generation
         protected virtual void CreateRoomObject()
         {
             //Create new Room Object
-            _roomObject = MonoBehaviour.Instantiate(_roomRules.CorrectGameObject);
+            _roomObject = MonoBehaviour.Instantiate(_roomRules.RoomObject.Correct);
         }
 
         /// <summary>

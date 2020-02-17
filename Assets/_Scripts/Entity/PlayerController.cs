@@ -1,33 +1,32 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Raptor.Events;
 using UnityEngine;
 
-[RequireComponent(typeof(GameEventHandler))]
-public class PlayerController : EntityBase, IDamageDealer, IDamagable, IEventObserver
-{
-    [SerializeField] StatFloat _health;
-    [SerializeField] StatFloat _otherHealth;
+using Raptor.Entity;
+using Raptor.Combat;
 
+[RequireComponent(typeof(GameEventHandler))]
+public class PlayerController : EntityBase
+{
+    PlayerInputActions _inputActions;
     Animator _animator;
     PlayerMovement _playerMovement;
-    CombatSystem _comboSystem;
-
-    public StatFloat Health { get => _health; private set => _health = value; }
+    CombatHandler _comboSystem;
 
     // Start is called before the first frame update
     void Start()
     {
         _animator = GetComponent<Animator>();
         _playerMovement = GetComponent<PlayerMovement>();
-        _comboSystem = GetComponent<CombatSystem>();
+        _comboSystem = GetComponent<CombatHandler>();
 
-        GetComponent<GameEventHandler>().AddListener(OnDeath, GameEvents.Default);
+        Debug.Log("Removing it");
     }
 
-    void Test()
+    void Test(int a)
     {
-        GetComponent<GameEventHandler>().Trigger(GameEvents.Default, new GameEventBase(this));
     }
 
     // Update is called once per frame
@@ -50,23 +49,13 @@ public class PlayerController : EntityBase, IDamageDealer, IDamagable, IEventObs
         return !_playerMovement.IsWalking;
     }
 
-    public void DealDamage(IDamageDealer actor, float damage)
+    protected override void AddListenersAddtitional()
     {
-        _health.Current -= damage;
+
     }
 
-    public void OnDeath(IGameEvent eventInfo)
+    protected override void RemoveListenersAdditional()
     {
-        StartCoroutine(Die());
-    }
 
-    public IEnumerator Die()
-    {
-        yield return null;
-    }
-
-    public GameObject GetGameObject()
-    {
-        return gameObject;
     }
 }

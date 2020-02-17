@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Script that prevents the attached GameObject from being destroyed on scene transition
-/// </summary>
-public class DontDestroy : MonoBehaviour
+namespace Raptor.Utility
 {
-    void Awake()
+    /// <summary>
+    /// Script that prevents the attached GameObject from being destroyed on scene transition
+    /// </summary>
+    public class DontDestroy : MonoBehaviour
     {
-        DontDestroyOnLoad(this.gameObject);
+        void Awake()
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 }

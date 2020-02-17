@@ -1,110 +1,55 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 namespace Raptor.Events
 {
-
+    /// <summary>
+    /// Handles event for and entity or object with components attached to it
+    /// USE INVOKE, don't call directly
+    /// </summary>
     public class GameEventHandler : MonoBehaviour
     {
-        Dictionary<GameEvents, List<Action<IGameEvent>>> listeners;
+        #region Events
+        Action<OnDamageArgs> _onDamage;
+        Action<OnDeathArgs> _onDeath;
 
+        Action<OnSpawnArgs> _onEntitySpawned;
 
-        [SerializeField] int _numEvt;
-
-        private void Awake()
-        {
-            listeners = new Dictionary<GameEvents, List<Action<IGameEvent>>>();
-        }
-
-        private void Update()
-        {
-            _numEvt = listeners.Count;
-        }
-
-        /// <summary>
-        /// Add action to listeners 
-        /// </summary>
-        /// <param name="listener"></param>
-        /// <param name="eventName"></param>
-        public void AddListener(Action<IGameEvent> listener, GameEvents eventName)
-        {
-            //When this kind of game event has not yet been subscribed, generate a new list.
-            if (!listeners.ContainsKey(eventName))
-            {
-                listeners.Add(eventName, new List<Action<IGameEvent>>());
-            }
-
-            try
-            {
-                //Add listener to list of listeners for this event
-                listeners[eventName].Add(listener);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
+        Action<OnSpellHitArgs> _onSpellHit;
+        Action<OnSpellHitArgs> _onSpellApplied;
+        Action<OnSpellRemovedArgs> _onSpellRemoved;
+        Action<EventArgs> _onLevelStarted; //TODO:
+        Action<EventArgs> _onLevelEnded; //TODO:
+        Action<EventArgs> _onGameplayStarted; //TODO:
+        Action<EventArgs> _onGameplayEnded; //TODO:
 
         /// <summary>
-        /// Remove action from listeners
+        ///When entity is actually damaged
         /// </summary>
-        /// <param name="listener"></param>
-        public void RemoveListener(Action<IGameEvent> listener)
-        {
-            //Go through each list and delete listener if found
-            foreach (GameEvents eventName in listeners.Keys)
-            {
-                //If desired action is found, remove and break
-                if (listeners[eventName].Remove(listener))
-                {
-                    if (listeners[eventName].Count == 0)
-                    {
-                        listeners.Remove(eventName);
-                    }
-                    else
-                    {
-                        //TODO: Neccessary? Correct?
-                        listeners[eventName].TrimExcess();
-                    }
-                    break;
-                }
-            }
-        }
-
+        /// <value></value>
+        public Action<OnDamageArgs> OnDamage { get => _onDamage; set => _onDamage = value; }
         /// <summary>
-        /// TODO: Remove all listeners of one object
+        /// An entity has died
         /// </summary>
-        public void RemoveListenerOfObserver(IEventObserver observer)
+        /// <value></value>
+        public Action<OnDeathArgs> OnDeath { get => _onDeath; set => _onDeath = value; }
+        public Action<OnSpellHitArgs> OnSpellHit { get => _onSpellHit; set => _onSpellHit = value; }
+        public Action<OnSpellRemovedArgs> OnSpellRemoved { get => _onSpellRemoved; set => _onSpellRemoved = value; }
+        public Action<EventArgs> OnGameplayStarted { get => _onGameplayStarted; set => _onGameplayStarted = value; }
+        public Action<EventArgs> OnGameplayEnded { get => _onGameplayEnded; set => _onGameplayEnded = value; }
+
+        #endregion
+
+        public void Invoke<T>(Action<T> action, T args)
         {
+            action?.Invoke(args);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="gameEvent"></param>
-        public void Trigger(GameEvents eventName, IGameEvent gameEvent)
-        {
-            List<Action<IGameEvent>> eventListeners;
-
-            if (listeners.TryGetValue(eventName, out eventListeners))
-            {
-                foreach (Action<IGameEvent> listener in eventListeners)
-                {
-                    listener.Invoke(gameEvent);
-                }
-            }
-            else
-            {
-                //Do nothing
-            }
-        }
     }
 
-    public interface IEventObserver
+    public interface IEventObserver : IHasGameEventHandler
     {
+        void AddListeners();
+        void RemoveListeners();
     }
-
 }

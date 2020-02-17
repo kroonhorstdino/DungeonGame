@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Raptor.Combat;
 
-public interface IDamagable : IActor
+namespace Raptor.Entity
 {
-    void DealDamage(IDamageDealer actor, float damage);
-}
+    public interface IDamagable : IEntityComponent
+    {
+        void DealDamage(CombatHandler actor, float damage);
+    }
 
-public interface IDamageDealer : IActor
-{
-}
+    public interface IDamageDealer : IEntityComponent
+    {
 
-public interface IActor
-{
-    GameObject GetGameObject();
+    }
 }

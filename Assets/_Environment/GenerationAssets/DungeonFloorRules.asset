@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ac956cbd834ad499a4d56b2bb73a77, type: 3}
+  m_Name: DungeonFloorRules
+  m_EditorClassIdentifier: Assembly-CSharp:Raptor.Dungeon.Generation:DungeonFloorRules
+  roomObject:
+    _default: {fileID: 2260560454744391343, guid: 19d29f99557d8b3438bfe8a39082bb70,
+      type: 3}
+    _override: {fileID: 0}
+  _numRoomsPerFloor:
+    _weightedDistribution:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    min: 0
+    max: 0
+  _weightedRoomRules:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues:
+    - 1
+    _keys:
+    - 1
+    _values:
+    - {fileID: 11400000, guid: d6dc85de204112949bba33553ed0eb8c, type: 2}
+  _bounds:
+    m_Position: {x: 100, y: 100, z: 0}
+    m_Size: {x: 0, y: 0, z: 0}

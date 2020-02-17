@@ -8,7 +8,7 @@ using Raptor.Dungeon.Generation;
 using Raptor.Dungeon;
 using Raptor.Utility;
 
-namespace RocketRaptor.EditorExtension
+namespace Raptor.EditorExtension
 {
     [CustomEditor(typeof(DungeonGenerator))]
     public class GenerateDungeonEditor : Editor

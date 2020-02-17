@@ -2,7 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAnimated
+namespace Raptor.Entity
 {
-    void SetAnimationVariables();
+
+
+    public interface IAnimated
+    {
+        void SetAnimationVariables();
+    }
+
+
+    public interface IHasGameObject
+    {
+        GameObject GetGameObject();
+    }
 }

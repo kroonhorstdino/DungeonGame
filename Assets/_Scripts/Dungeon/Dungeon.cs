@@ -5,7 +5,6 @@ using System;
 
 namespace Raptor.Dungeon
 {
-    //TODO: Maybe transfer grid functions to a separate class? (In utility for example?)
     using Generation;
 
     /// <summary>
