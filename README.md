@@ -2,24 +2,8 @@
 
 ***
 
-Repository for our first game
+Unfinished roguelike dungeon crawler game
+
+WIP Dungeon generation is in place. Amount and size parameters can be specified
 
 ***
-
-TODO: Links (Social Media, Vlogs, etc.)
-
-***
-
-
-TODO: Game Description
-
-
-TODO: Screenshots
-
-TODO: Devlog
-
-
-TODO: Licensing
-
-
-TODO: Crediting
