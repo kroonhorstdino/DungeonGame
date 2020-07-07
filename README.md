@@ -1,7 +1,6 @@
 # **DUNGEON GAME** 
 
-Unfinished roguelike dungeon crawler game
-WIP Dungeon layout generation is in place. Amount and size parameters for rooms can be specified
+Unfinished roguelike dungeon crawler game with simple layout generation in place. Amount and size parameters for rooms and a seed can be specified.
 
 ***
 
